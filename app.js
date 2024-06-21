@@ -5,7 +5,6 @@ const cors = require('cors');
 const app = express();
 const port = 3000;
 
-// Simplified CORS configuration to accept requests from any origin
 app.use(cors());
 
 app.get('/hello', (req, res) => {
