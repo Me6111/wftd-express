@@ -14,7 +14,7 @@ app.use(cors({
 }));
 
 app.get('/hello', (req, res) => {
-  res.send('Hello client');
+  res.json({ message: 'Hello client' }); // Sending JSON response instead of plain text
 });
 
 app.listen(port, () => {
