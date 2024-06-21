@@ -29,18 +29,14 @@ app.get('/hello', (req, res) => {
 app.get('/tables-info', async (req, res) => {
   try {
     const tablesInfo = await tablesInfoService.fetchTablesAndColumns();
-    // Since tablesInfo is an array of objects containing tableName and columns,
-    // we map over it to create a single object with tables and columns arrays.
-    const responseObj = {
-      tables: tablesInfo.map(info => info.tableName),
-      columns: tablesInfo.flatMap(info => info.columns)
-    };
-    res.json(responseObj);
+    // Directly send the structured data obtained from fetchTablesAndColumns
+    res.json(tablesInfo);
   } catch (error) {
     console.error('Error fetching tables and columns:', error);
     res.status(500).send('Internal Server Error');
   }
 });
+
 
 // Start the server
 app.listen(port, () => {
