@@ -5,11 +5,13 @@
 
 
 const express = require('express');
-const cors = require('cors'); 
+const cors = require('cors');
 const app = express();
-const port = 3000;
 
-app.use(cors()); 
+// Use the port provided by Railway
+const port = process.env.PORT || 3000; // Fallback to 3000 for local development
+
+app.use(cors());
 
 app.get('/hello', (req, res) => {
   res.send('Hello client');
