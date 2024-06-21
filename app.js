@@ -3,22 +3,17 @@
 
 // C:\Users\user\Desktop\projects\wftd-express\app.js
 
-// app.js
 
 const express = require('express');
 const cors = require('cors');
-const { Pool } = require('pg'); // Import Pool from pg
+const TablesInfoService = require('./tablesInfo'); // Import the service class
 const app = express();
 
-// Use the port provided by Railway
-const port = process.env.PORT || 3000; // Fallback to 3000 for local development
+const port = process.env.PORT || 3000;
 
 app.use(cors());
 
-// Initialize the database connection using DATABASE_URL
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-});
+const tablesInfoService = new TablesInfoService(process.env.DATABASE_URL);
 
 // Root path route
 app.get('/', (req, res) => {
@@ -30,11 +25,16 @@ app.get('/hello', (req, res) => {
   res.send('Hello client');
 });
 
-// Import the function from tablesInfo.js
-const { defineTablesInfoEndpoint } = require('./tablesInfo.js');
-
-// Define the '/tables-info' endpoint using the imported function
-defineTablesInfoEndpoint(app, pool); // Pass both app and pool instances
+// Tables-info route
+app.get('/tables-info', async (req, res) => {
+  try {
+    const tablesInfo = await tablesInfoService.fetchTablesAndColumns();
+    res.json(tablesInfo);
+  } catch (error) {
+    console.error('Error fetching tables and columns:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
 
 // Start the server
 app.listen(port, () => {
