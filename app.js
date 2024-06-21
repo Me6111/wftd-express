@@ -10,7 +10,6 @@ const { Pool } = require('pg'); // Import Pool from pg
 const app = express();
 const { getTablesInfo } = require('./tablesInfo.js'); // Import the function
 
-
 // Use the port provided by Railway
 const port = process.env.PORT || 3000; // Fallback to 3000 for local development
 
@@ -31,7 +30,8 @@ app.get('/hello', (req, res) => {
   res.send('Hello client');
 });
 
-
+// Endpoint to get tables and column information
+app.get('/tables-info', getTablesInfo); // Use the imported function
 
 // Start the server
 app.listen(port, () => {
