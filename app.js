@@ -3,12 +3,12 @@
 
 // C:\Users\user\Desktop\projects\wftd-express\app.js
 
+// app.js
 
 const express = require('express');
 const cors = require('cors');
 const { Pool } = require('pg'); // Import Pool from pg
 const app = express();
-const { getTablesInfo } = require('./tablesInfo.js'); // Import the function
 
 // Use the port provided by Railway
 const port = process.env.PORT || 3000; // Fallback to 3000 for local development
@@ -30,8 +30,11 @@ app.get('/hello', (req, res) => {
   res.send('Hello client');
 });
 
-// Endpoint to get tables and column information
-app.get('/tables-info', getTablesInfo()); // Call the imported function
+// Import the function from tablesInfo.js
+const { defineTablesInfoEndpoint } = require('./tablesInfo.js');
+
+// Define the '/tables-info' endpoint using the imported function
+defineTablesInfoEndpoint(app, pool); // Pass both app and pool instances
 
 // Start the server
 app.listen(port, () => {
