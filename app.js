@@ -31,7 +31,7 @@ app.get('/hello', (req, res) => {
 });
 
 // Endpoint to get tables and column information
-app.get('/tables-info', getTablesInfo); // Use the imported function
+app.get('/tables-info', getTablesInfo()); // Call the imported function
 
 // Start the server
 app.listen(port, () => {
