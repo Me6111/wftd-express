@@ -1,9 +1,3 @@
-
-
-
-
-// C:\Users\user\Desktop\projects\wftd-express\tablesInfo.js
-
 // C:\Users\user\Desktop\projects\wftd-express\tablesInfo.js
 
 const { Pool } = require('pg');
@@ -16,7 +10,6 @@ class TablesInfoService {
   }
 
   async getAllTableNames() {
-    // Modified query to exclude system tables more effectively
     const query = `
       SELECT tablename 
       FROM pg_catalog.pg_tables 
@@ -25,8 +18,11 @@ class TablesInfoService {
     return await this.pool.query(query);
   }
 
-  async getColumnNamesForTable(tableName) {
-    const query = 'SELECT column_name FROM information_schema.columns WHERE table_name = $1';
+  async getColumnDetails(tableName) {
+    const query = `
+      SELECT column_name, data_type 
+      FROM information_schema.columns 
+      WHERE table_name = $1`;
     return await this.pool.query(query, [tableName]);
   }
 
@@ -37,8 +33,12 @@ class TablesInfoService {
 
       const tablesInfo = await Promise.all(
         tables.map(async tableName => {
-          const columnsResult = await this.getColumnNamesForTable(tableName);
-          return { tableName, columns: columnsResult.rows.map(row => row.column_name) };
+          const columnsResult = await this.getColumnDetails(tableName);
+          const columns = columnsResult.rows.reduce((acc, curr) => {
+            acc[curr.column_name] = curr.data_type;
+            return acc;
+          }, {});
+          return { tableName, columns };
         })
       );
 
