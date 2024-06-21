@@ -5,6 +5,8 @@
 // C:\Users\user\Desktop\projects\wftd-express\tablesInfo.js
 
 
+// This code assumes the `pool` variable is already defined and has a working connection to your database.
+
 app.get('/tables-info', async (req, res) => {
     try {
       const getAllTableNames = async () => {
@@ -17,24 +19,30 @@ app.get('/tables-info', async (req, res) => {
         return await pool.query(query, [tableName]);
       };
   
+      // Fetch table names
       const tablesResult = await getAllTableNames();
       const tables = tablesResult.rows.map(row => row.tablename);
   
+      // Fetch column names for each table in parallel
       const columnsPromises = tables.map(async tableName => {
         const columnsResult = await getAllColumnNames(tableName);
         return { tableName, columns: columnsResult.rows.map(row => row.column_name) };
       });
   
+      // Wait for all column fetches to complete
       const columnsResults = await Promise.all(columnsPromises);
   
+      // Combine table and column information
       const tablesInfo = columnsResults.map(result => ({
         tableName: result.tableName,
         columns: result.columns
       }));
   
+      // Send JSON response with table and column information
       res.json({ tables: tablesInfo.map(info => info.tableName), columns: tablesInfo.map(info => info.columns) });
     } catch (error) {
       console.error('Error fetching tables and columns:', error);
       res.status(500).send('Internal Server Error');
     }
-});
+  });
+  
