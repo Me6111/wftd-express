@@ -13,6 +13,11 @@ const port = process.env.PORT || 3000; // Fallback to 3000 for local development
 
 app.use(cors());
 
+// Add a route for the root path ('/')
+app.get('/', (req, res) => {
+  res.send('Hello from the root path!');  // Replace with your desired content
+});
+
 app.get('/hello', (req, res) => {
   res.send('Hello client');
 });
@@ -20,3 +25,4 @@ app.get('/hello', (req, res) => {
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
+
