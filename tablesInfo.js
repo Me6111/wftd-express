@@ -4,6 +4,7 @@
 
 // C:\Users\user\Desktop\projects\wftd-express\tablesInfo.js
 
+// C:\Users\user\Desktop\projects\wftd-express\tablesInfo.js
 
 const { Pool } = require('pg');
 
@@ -15,7 +16,12 @@ class TablesInfoService {
   }
 
   async getAllTableNames() {
-    const query = 'SELECT tablename FROM pg_catalog.pg_tables WHERE schemaname!= \'information_schema\'';
+    // Modified query to exclude system tables more effectively
+    const query = `
+      SELECT tablename 
+      FROM pg_catalog.pg_tables 
+      WHERE schemaname!= 'information_schema' 
+      AND tablename!~ '^pg_'`;
     return await this.pool.query(query);
   }
 
