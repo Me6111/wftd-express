@@ -19,7 +19,7 @@ class TablesInfoService {
     return await this.pool.query(query);
   }
 
-  async getAllColumnNames(tableName) {
+  async getColumnNamesForTable(tableName) {
     const query = 'SELECT column_name FROM information_schema.columns WHERE table_name = $1';
     return await this.pool.query(query, [tableName]);
   }
@@ -29,17 +29,12 @@ class TablesInfoService {
       const tablesResult = await this.getAllTableNames();
       const tables = tablesResult.rows.map(row => row.tablename);
 
-      const columnsPromises = tables.map(async tableName => {
-        const columnsResult = await this.getAllColumnNames(tableName);
-        return { tableName, columns: columnsResult.rows.map(row => row.column_name) };
-      });
-
-      const columnsResults = await Promise.all(columnsPromises);
-
-      const tablesInfo = columnsResults.map(result => ({
-        tableName: result.tableName,
-        columns: result.columns
-      }));
+      const tablesInfo = await Promise.all(
+        tables.map(async tableName => {
+          const columnsResult = await this.getColumnNamesForTable(tableName);
+          return { tableName, columns: columnsResult.rows.map(row => row.column_name) };
+        })
+      );
 
       return tablesInfo;
     } catch (error) {
