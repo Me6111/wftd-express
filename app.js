@@ -121,6 +121,15 @@ app.post('/receive_and_send_response', async (req, res) => {
         receivedData: req.body,
         bordersData: execute_qq(qq), 
       });
+
+
+
+
+
+
+
+
+      
     } else {
       console.log('No data received or data format is incorrect.');
       res.status(400).send({ message: 'No data received or data format is incorrect.' });
