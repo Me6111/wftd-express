@@ -114,6 +114,10 @@ app.post('/receive_and_send_response', async (req, res) => {
       console.log('----------------------------------------------')
       console.log('Received data from client:', req.body);
 
+
+      
+      let get_borders_qq;
+      
       if (req.body.full_loc.toString() === '[null,null,null,null]') {
         get_borders_qq = 'SELECT country, cleaned_geojson FROM country';
         console.log('get_borders_qq:', get_borders_qq);
