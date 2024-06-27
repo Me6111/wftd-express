@@ -114,7 +114,10 @@ app.post('/receive_and_send_response', async (req, res) => {
       console.log('----------------------------------------------')
       console.log('Received data from client:', req.body);
 
-      var qq = 'SELECT country, cleaned_geojson FROM country'
+      if (req.body.full_loc.toString() === '[null,null,null,null]') {
+        get_borders_qq = 'SELECT country, cleaned_geojson FROM country';
+        console.log('get_borders_qq:', get_borders_qq);
+      }
       
       res.status(200).send({
         message: 'Data received successfully',
@@ -129,7 +132,7 @@ app.post('/receive_and_send_response', async (req, res) => {
 
 
 
-      
+
     } else {
       console.log('No data received or data format is incorrect.');
       res.status(400).send({ message: 'No data received or data format is incorrect.' });
