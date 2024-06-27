@@ -12,6 +12,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(cors());
+app.use(express.json());
 
 const tablesInfoService = new TablesInfoService(process.env.DATABASE_URL);
 
@@ -99,22 +100,36 @@ app.post('/get_borders', async (req, res) => {
 
 
 
+
+
+
 app.post('/receive_and_send_response', async (req, res) => {
   try {
-    console.log('Received data from client:', req.body);
+    // Explicitly check if req.body exists and is an object
+    if (req.body && typeof req.body === 'object') {
+      console.log('Received data from client:', req.body);
 
-    // Log the type of the received data to ensure it's what we expect
-    console.log('Type of received data:', typeof req.body);
+      // Log the type of the received data to ensure it's what we expect
+      console.log('Type of received data:', typeof req.body);
 
-    // Respond back to the client indicating success
-    res.status(200).send({
-      message: 'Data received successfully',
-      receivedData: req.body,
-    });
+      // Respond back to the client indicating success
+      res.status(200).send({
+        message: 'Data received successfully',
+        receivedData: req.body,
+      });
+    } else {
+      console.log('No data received or data format is incorrect.');
+      res.status(400).send({ message: 'No data received or data format is incorrect.' });
+    }
   } catch (error) {
     console.error('Error processing the request:', error);
     res.status(500).send({ message: 'An error occurred while processing your request.' });
   }
+});
+
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => {
+  console.log(`Example app listening at http://localhost:${PORT}`);
 });
 
 
