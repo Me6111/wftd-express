@@ -122,7 +122,7 @@ app.post('/receive_and_send_response', async (req, res) => {
       let where_loc_borders_qq;
 
       let adm_unit_locs_borders;
-      let where_loc_borders;
+      let where_loc_borders = null;
 
       if ((req.body.full_loc.every(item => item === ''))) {
         adm_unit_locs_borders_qq = 'SELECT country, cleaned_geojson FROM country';
