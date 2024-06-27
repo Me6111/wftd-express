@@ -99,6 +99,28 @@ app.post('/get_borders', async (req, res) => {
 
 
 
+app.post('/receive_and_send_response', async (req, res) => {
+  try {
+    console.log('Received data from client:', req.body);
+
+    // Log the type of the received data to ensure it's what we expect
+    console.log('Type of received data:', typeof req.body);
+
+    // Respond back to the client indicating success
+    res.status(200).send({
+      message: 'Data received successfully',
+      receivedData: req.body,
+    });
+  } catch (error) {
+    console.error('Error processing the request:', error);
+    res.status(500).send({ message: 'An error occurred while processing your request.' });
+  }
+});
+
+
+
+
+
 
 
 
