@@ -101,12 +101,11 @@ app.post('/get_borders', async (req, res) => {
 
 
 
-function execute_qq(qq) {
-  const result = db.query(qq);
-  return result.rows;
+async function execute_qq(qq) {
+  console.log('execute_qq - qq:', qq);
+  const result = await db.query(qq); // Use await to wait for the query to complete
+  return result.rows; // Now this will correctly return the rows
 };
-
-
 
 app.post('/receive_and_send_response', async (req, res) => {
   try {
@@ -114,19 +113,18 @@ app.post('/receive_and_send_response', async (req, res) => {
       console.log('----------------------------------------------')
       console.log('Received data from client:', req.body);
 
-
-      
       let get_borders_qq;
-      
+
       if ((req.body.full_loc.every(item => item === ''))) {
         get_borders_qq = 'SELECT country, cleaned_geojson FROM country';
-        console.log('get_borders_qq:', get_borders_qq);
-      }
-      
+      };
+
+      const bordersData = await execute_qq(get_borders_qq); // Await the result of execute_qq
+
       res.status(200).send({
         message: 'Data received successfully',
         receivedData: req.body,
-        bordersData: execute_qq(get_borders_qq), 
+        bordersData: bordersData, // Use the awaited result directly
       });
 
 
