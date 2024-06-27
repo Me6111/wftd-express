@@ -118,16 +118,16 @@ app.post('/receive_and_send_response', async (req, res) => {
       console.log('----------------------------------------------')
       console.log('Received data from client:', req.body);
 
-      let get_borders_qq;
+      let adm_unit_locs_borders_qq;
       let where_loc_borders_qq;
 
-      let borders;
+      let adm_unit_locs_borders;
       let where_loc_borders;
 
       if ((req.body.full_loc.every(item => item === ''))) {
-        get_borders_qq = 'SELECT country, cleaned_geojson FROM country';
+        adm_unit_locs_borders_qq = 'SELECT country, cleaned_geojson FROM country';
       } else {
-        get_borders_qq = `
+        adm_unit_locs_borders_qq = `
           SELECT ${adm_unit}, cleaned_geojson 
           FROM ${adm_unit} 
           WHERE ${where_adm_unit}_id = (
@@ -143,8 +143,8 @@ app.post('/receive_and_send_response', async (req, res) => {
         `;
         where_loc_borders = await execute_qq(where_loc_borders_qq);
       }
-      borders = await execute_qq(get_borders_qq);
-      var response = {'where_loc_borders': where_loc_borders,'borders': borders};
+      adm_unit_locs_borders = await execute_qq(adm_unit_locs_borders_qq);
+      var response = {'where_loc_borders': where_loc_borders,'adm_unit_locs_borders': adm_unit_locs_borders};
       console.log('receive_and_send_response - response:', response);
       res.send(response);
 
