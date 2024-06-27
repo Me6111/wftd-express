@@ -1,8 +1,4 @@
-
-
-
 // C:\Users\user\Desktop\projects\wftd-express\app.js
-
 
 const express = require('express');
 const cors = require('cors');
@@ -38,21 +34,7 @@ app.get('/tables-info', async (req, res) => {
   }
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// Corrected '/get_borders' endpoint
 app.post('/get_borders', async (req, res) => {
   try {
     console.log(`Full received data from client: ${JSON.stringify(req.body)}`, typeof req.body);
@@ -93,16 +75,7 @@ app.post('/get_borders', async (req, res) => {
   }
 });
 
-
-
-
-
-
-
-
-
-
-
+// Corrected '/receive_and_send_response' endpoint
 app.post('/receive_and_send_response', async (req, res) => {
   try {
     // Explicitly check if req.body exists and is an object
@@ -127,19 +100,7 @@ app.post('/receive_and_send_response', async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-  console.log(`Example app listening at http://localhost:${PORT}`);
-});
-
-
-
-
-
-
-
-
-// Start the server
+// Removed duplicate listen statement
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
