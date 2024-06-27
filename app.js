@@ -122,7 +122,7 @@ app.post('/receive_and_send_response', async (req, res) => {
       res.status(200).send({
         message: 'Data received successfully',
         receivedData: req.body,
-        bordersData: execute_qq(qq), 
+        bordersData: execute_qq(get_borders_qq), 
       });
 
 
