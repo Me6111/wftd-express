@@ -103,8 +103,13 @@ app.post('/get_borders', async (req, res) => {
 
 async function execute_qq(qq) {
   console.log('execute_qq - qq:', qq);
-  const result = await db.query(qq); // Use await to wait for the query to complete
-  return result.rows; // Now this will correctly return the rows
+  try {
+    const result = await db.query(qq);
+    return result.rows;
+  } catch (error) {
+    console.error('Error executing query:', error);
+    throw error; // Rethrow the error to be caught by the caller
+  }
 };
 
 app.post('/receive_and_send_response', async (req, res) => {
@@ -126,15 +131,6 @@ app.post('/receive_and_send_response', async (req, res) => {
         receivedData: req.body,
         bordersData: bordersData, // Use the awaited result directly
       });
-
-
-
-
-
-
-
-
-
     } else {
       console.log('No data received or data format is incorrect.');
       res.status(400).send({ message: 'No data received or data format is incorrect.' });
