@@ -146,7 +146,7 @@ app.post('/receive_and_send_response', async (req, res) => {
       borders = await execute_qq(get_borders_qq);
       var response = {'where_loc_borders': where_loc_borders,'borders': borders};
       console.log(response);
-      res.send(response);
+      res.send('receive_and_send_response - response:', response);
 
 
 
