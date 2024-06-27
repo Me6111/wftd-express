@@ -119,18 +119,38 @@ app.post('/receive_and_send_response', async (req, res) => {
       console.log('Received data from client:', req.body);
 
       let get_borders_qq;
+      let where_loc_borders_qq;
+
+      let borders;
+      let where_loc_borders;
 
       if ((req.body.full_loc.every(item => item === ''))) {
         get_borders_qq = 'SELECT country, cleaned_geojson FROM country';
-      };
+      } else {
+        get_borders_qq = `
+          SELECT ${adm_unit}, cleaned_geojson 
+          FROM ${adm_unit} 
+          WHERE ${where_adm_unit}_id = (
+            SELECT ${where_adm_unit}_id 
+            FROM ${where_adm_unit} 
+            WHERE ${where_adm_unit} = '${where_loc}'
+          )
+        `;
+        where_loc_borders_qq = `
+          SELECT ${where_adm_unit}_id, ${where_adm_unit}, cleaned_geojson 
+          FROM ${where_adm_unit} 
+          WHERE ${where_adm_unit} = '${where_loc}'
+        `;
+        where_loc_borders = await execute_qq(where_loc_borders_qq);
+      }
+      borders = await execute_qq(get_borders_qq);
+      var response = {'where_loc_borders': where_loc_borders,'borders': borders};
+      console.log(response);
+      res.send(response);
 
-      const bordersData = await execute_qq(get_borders_qq); // Await the result of execute_qq
 
-      res.status(200).send({
-        message: 'Data received successfully',
-        receivedData: req.body,
-        bordersData: bordersData, // Use the awaited result directly
-      });
+
+
     } else {
       console.log('No data received or data format is incorrect.');
       res.status(400).send({ message: 'No data received or data format is incorrect.' });
