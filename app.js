@@ -101,21 +101,25 @@ app.post('/get_borders', async (req, res) => {
 
 
 
+function execute_qq(qq) {
+  const result = db.query(qq);
+  return result.rows;
+};
+
+
 
 app.post('/receive_and_send_response', async (req, res) => {
   try {
     if (req.body && typeof req.body === 'object') {
+      console.log('----------------------------------------------')
       console.log('Received data from client:', req.body);
-      console.log('Type of received data:', typeof req.body);
 
-      // Execute the SQL query
-      const result = await db.query('SELECT country, cleaned_geojson FROM country');
-
-      // Send the query result back to the client
+      var qq = 'SELECT country, cleaned_geojson FROM country'
+      
       res.status(200).send({
         message: 'Data received successfully',
         receivedData: req.body,
-        bordersData: result.rows, // Assuming you want to send the rows returned by the query
+        bordersData: execute_qq(qq), 
       });
     } else {
       console.log('No data received or data format is incorrect.');
