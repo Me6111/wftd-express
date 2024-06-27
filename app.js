@@ -118,7 +118,7 @@ app.post('/receive_and_send_response', async (req, res) => {
       
       let get_borders_qq;
       
-      if (req.body.full_loc.toString() === '[null,null,null,null]') {
+      if ((req.body.full_loc.every(item => item === ''))) {
         get_borders_qq = 'SELECT country, cleaned_geojson FROM country';
         console.log('get_borders_qq:', get_borders_qq);
       }
