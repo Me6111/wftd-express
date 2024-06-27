@@ -4,6 +4,7 @@ const express = require('express');
 const cors = require('cors');
 const TablesInfoService = require('./tablesInfo'); // Ensure this path is correct
 const app = express();
+const db = require('./db');
 
 const port = process.env.PORT || 3000;
 
@@ -12,15 +13,29 @@ app.use(express.json());
 
 const tablesInfoService = new TablesInfoService(process.env.DATABASE_URL);
 
+
+
+
+
 // Root path route
 app.get('/', (req, res) => {
   res.send('Hello from the root path!');
 });
 
+
+
+
+
+
 // Hello route
 app.get('/hello', (req, res) => {
   res.send('Hello client');
 });
+
+
+
+
+
 
 // Tables-info route
 app.get('/tables-info', async (req, res) => {
@@ -33,6 +48,12 @@ app.get('/tables-info', async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
+
+
+
+
+
+
 
 // Corrected '/get_borders' endpoint
 app.post('/get_borders', async (req, res) => {
@@ -75,20 +96,26 @@ app.post('/get_borders', async (req, res) => {
   }
 });
 
-// Corrected '/receive_and_send_response' endpoint
+
+
+
+
+
+
 app.post('/receive_and_send_response', async (req, res) => {
   try {
-    // Explicitly check if req.body exists and is an object
     if (req.body && typeof req.body === 'object') {
       console.log('Received data from client:', req.body);
-
-      // Log the type of the received data to ensure it's what we expect
       console.log('Type of received data:', typeof req.body);
 
-      // Respond back to the client indicating success
+      // Execute the SQL query
+      const result = await db.query('SELECT country, cleaned_geojson FROM country');
+
+      // Send the query result back to the client
       res.status(200).send({
         message: 'Data received successfully',
         receivedData: req.body,
+        bordersData: result.rows, // Assuming you want to send the rows returned by the query
       });
     } else {
       console.log('No data received or data format is incorrect.');
@@ -100,7 +127,17 @@ app.post('/receive_and_send_response', async (req, res) => {
   }
 });
 
-// Removed duplicate listen statement
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+// Start the server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
+
+
+
+
+
+
+
+
+
