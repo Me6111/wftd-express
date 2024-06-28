@@ -118,11 +118,16 @@ app.post('/receive_and_send_response', async (req, res) => {
       console.log('----------------------------------------------')
       console.log('Received data from client:', req.body);
 
+      const adm_units = ['country', 'state', 'city', 'zip'];
+
       let adm_unit_locs_borders_qq;
       let where_loc_borders_qq;
 
       let adm_unit_locs_borders;
-      let where_loc_borders = null;
+      let where_loc_borders;
+
+      var adm_unit = req.body['adm_unit'];
+      console.log('adm_unit:', adm_unit);
 
       if ((req.body.full_loc.every(item => item === ''))) {
         adm_unit_locs_borders_qq = 'SELECT country, cleaned_geojson FROM country';
