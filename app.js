@@ -140,6 +140,9 @@ app.post('/receive_and_send_response', async (req, res) => {
 
       var full_loc = req.body['full_loc'];
       var where_loc = full_loc[where_adm_unit];
+
+      adm_unit = adm_units[adm_unit];
+      where_adm_unit = adm_units[adm_unit - 1];
       
 
       //adm_unit = adm_units[where_adm_unit];
