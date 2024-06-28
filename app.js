@@ -151,8 +151,8 @@ app.post('/receive_and_send_response', async (req, res) => {
         console.log('where_loc:', where_loc);
 
         adm_unit_locs_borders_qq = `
-          SELECT ${adm_unit_idx}, cleaned_geojson 
-          FROM ${adm_unit_idx} 
+          SELECT ${adm_unit}, cleaned_geojson 
+          FROM ${adm_unit} 
           WHERE ${where_adm_unit}_id = (
             SELECT ${where_adm_unit}_id 
             FROM ${where_adm_unit} 
