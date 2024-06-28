@@ -144,6 +144,7 @@ app.post('/receive_and_send_response', async (req, res) => {
       if ((req.body.full_loc.every(item => item === ''))) {
         adm_unit_locs_borders_qq = 'SELECT country, cleaned_geojson FROM country';
       } else {
+        console.log('adm_units:', adm_units);
         where_adm_unit = adm_units[adm_unit - 1];
         console.log('where_adm_unit:', where_adm_unit);
         where_loc = full_loc[adm_unit - 1];
