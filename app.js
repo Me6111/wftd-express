@@ -136,15 +136,17 @@ app.post('/receive_and_send_response', async (req, res) => {
       //adm_unit = adm_units[where_adm_unit];
 
       
-      
+      var where_adm_unit = null;
+      var where_loc = null;
+
 
 
       if ((req.body.full_loc.every(item => item === ''))) {
         adm_unit_locs_borders_qq = 'SELECT country, cleaned_geojson FROM country';
       } else {
-        var where_adm_unit = adm_units[adm_unit - 1];
+        where_adm_unit = adm_units[adm_unit - 1];
         console.log('where_adm_unit:', where_adm_unit);
-        var where_loc = full_loc[adm_unit - 1];
+        where_loc = full_loc[adm_unit - 1];
         console.log('where_loc:', where_loc);
 
         adm_unit_locs_borders_qq = `
