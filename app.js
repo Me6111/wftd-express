@@ -127,7 +127,7 @@ app.post('/receive_and_send_response', async (req, res) => {
       let where_loc_borders;
 
       var adm_unit = req.body['adm_unit'];
-      console.log('adm_unit:', adm_unit);
+      console.log('adm_unit:', adm_unit, 'Type:', typeof adm_unit);
       //adm_unit = adm_units[adm_unit];
 
       var where_adm_unit = req.body['where_adm_unit'];
