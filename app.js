@@ -127,13 +127,15 @@ app.post('/receive_and_send_response', async (req, res) => {
       let where_loc_borders;
 
       var adm_unit = req.body['adm_unit'];
-      adm_unit = adm_units[adm_unit];
+      console.log('adm_unit:', adm_unit);
+      //adm_unit = adm_units[adm_unit];
 
       var where_adm_unit = req.body['where_adm_unit'];
-      adm_unit = adm_units[where_adm_unit];
-
-      console.log('adm_unit:', adm_unit);
       console.log('where_adm_unit:', where_adm_unit);
+      //adm_unit = adm_units[where_adm_unit];
+
+      
+      
 
 
       if ((req.body.full_loc.every(item => item === ''))) {
